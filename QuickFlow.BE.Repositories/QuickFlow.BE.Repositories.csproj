@@ -6,7 +6,25 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
+	<PropertyGroup>
+		<PackageId>QuickFlow.BE.Repositories</PackageId>
+		<Version>0.1.1</Version>
+		<Authors>QuickFlow Team</Authors>
+		<Description>The repositories implementation library for QuickFlow application.</Description>
+		<PackageReadmeFile>Readme.md</PackageReadmeFile>
+		<PackageTags>QuickFlow</PackageTags>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+	
+	<ItemGroup>
+		<None Update="Readme.md" Pack="true" PackagePath="\" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<InternalsVisibleTo Include="QuickFlow.BE.Main" />
+	</ItemGroup>
+
+	<ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.22" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.22">
       <PrivateAssets>all</PrivateAssets>

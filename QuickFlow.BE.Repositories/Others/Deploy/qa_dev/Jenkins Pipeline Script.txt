@@ -1,0 +1,113 @@
+﻿pipeline {
+	agent any
+
+	environment {
+		GIT_TOKEN_ID = "cred-github-quickacq-token"
+		GIT_REPO_URL = "https://github.com/QuickAcq/QuickFlow.BE.Repositories.git"
+		GIT_BRANCH_NAME = "main"
+		GIT_REPO_PATH = "repo"
+		PROJECT_LOCATION = "QuickFlow.BE.Repositories/QuickFlow.BE.Repositories.csproj"
+		NUGET_SERVER = "https://server-103-82-240-95.quickacq.com:21901/v3/index.json"
+		NUGET_API_KEY_ID = "cred-qa-nuget-apikey-id"
+		NUGET_CERT_ID = "cred-qa-nuget-cert-id"
+	}
+
+	stages {
+		stage('Git checkout') {
+			steps {
+                withCredentials([string(credentialsId: env.GIT_TOKEN_ID, variable: 'GITHUB_TOKEN')]) {
+                    sh """
+                        git clone https://${GITHUB_TOKEN}@${env.GIT_REPO_URL.replace('https://', '')} -b ${env.GIT_BRANCH_NAME} ${env.GIT_REPO_PATH}
+                    """
+                    echo "Git checkout - Success."
+                }
+				
+			}
+		}
+		
+		stage('Increment Version') {
+			steps {
+				script {
+					// Get current version
+					def currentVersion = sh(script: "grep '<Version>' ${env.GIT_REPO_PATH}/${env.PROJECT_LOCATION} | sed -E 's/.*<Version>([^<]+)<\\/Version>.*/\\1/'", returnStdout: true).trim()
+					echo "Current Version: ${currentVersion}"
+
+					// Increment patch version
+					def (major, minor, patch) = currentVersion.split('\\.')
+					def newVersion = "${major}.${minor}.${(patch.toInteger() + 1)}"
+					echo "New Version: ${newVersion}"
+
+					// update project file with the new version.
+					sh "sed -i 's/<Version>${currentVersion}<\\/Version>/<Version>${newVersion}<\\/Version>/' ${env.GIT_REPO_PATH}/${env.PROJECT_LOCATION}"
+					echo "Save new version - Success."
+							
+					// Commit and push version change to GitHub
+					withCredentials([string(credentialsId: env.GIT_TOKEN_ID, variable: 'GITHUB_TOKEN')]) {
+					    sh 'git --version'
+					    
+                        sh """
+                        cd ${env.GIT_REPO_PATH}
+                        git config user.name 'Jenkins'
+                        git config user.email 'jenkins@inspirotechs.com'
+                        echo "Git configure user - Success."
+
+                        git add ${env.PROJECT_LOCATION}
+                        echo "Git add changes to staging - Success."
+
+                        git commit -m 'Bump version to ${newVersion}' || echo "No changes to commit"
+                        echo "Git commit success."
+						git push https://${GITHUB_TOKEN}@${env.GIT_REPO_URL.replace('https://', '')} HEAD:${env.GIT_BRANCH_NAME}
+						echo "Git push - Success."
+						"""
+					}
+				}
+			}
+		}
+        		
+        stage('Trust QuickAcq NuGet Certificate') {
+            steps {
+                withCredentials([file(credentialsId: env.NUGET_CERT_ID, variable: 'CERT_FILE')]) {
+                    sh '''
+                        cp $CERT_FILE /usr/local/share/ca-certificates/inspiro_nuget_server.crt
+                        update-ca-certificates
+                        echo "Installing certificate for Nuget private server - Success"
+                    '''
+                }
+            }
+        }		
+		
+		stage('Build') {
+			steps {
+				sh "dotnet build ${env.GIT_REPO_PATH}/${env.PROJECT_LOCATION} --configuration Release"
+				echo "Build - Success."
+			}
+		}
+		
+		stage('Pack') {
+			steps {
+				sh "dotnet pack ${env.GIT_REPO_PATH}/${env.PROJECT_LOCATION} --configuration Release --output ./artifacts"
+				echo "Pack - Success."
+			}
+		}
+		
+		stage('Publish to QuickAcq NuGet server') {
+			steps {
+				withCredentials([string(credentialsId: env.NUGET_API_KEY_ID, variable: 'NUGET_API_KEY')]) {
+					sh """
+					dotnet nuget push ./artifacts/*.nupkg \
+					--source ${env.NUGET_SERVER} \
+					--api-key ${NUGET_API_KEY}
+					"""
+				}
+				echo "Publish to QuickAcq NuGet server - Success."
+			}
+		}
+	}
+
+	post {
+		always {
+			cleanWs()
+			echo "Cleanup success."
+		}
+	}
+}

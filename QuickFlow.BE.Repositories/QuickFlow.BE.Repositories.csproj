@@ -21,7 +21,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="QuickFlow.BE.Main" />
+		<InternalsVisibleTo Include="QuickFlow.BE.Application.Core" />
 	</ItemGroup>
 
 	<ItemGroup>

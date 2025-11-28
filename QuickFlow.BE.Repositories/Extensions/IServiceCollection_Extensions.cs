@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
-using QuickFlow.BE.Repositories;
 using QuickFlow.BE.Shared.Interfaces.Repositories;
 
 namespace QuickFlow.BE.Repositories.Extensions

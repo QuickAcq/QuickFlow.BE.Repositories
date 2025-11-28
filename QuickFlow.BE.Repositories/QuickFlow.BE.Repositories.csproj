@@ -8,7 +8,7 @@
 
 	<PropertyGroup>
 		<PackageId>QuickFlow.BE.Repositories</PackageId>
-		<Version>0.1.6</Version>
+		<Version>0.1.7</Version>
 		<Authors>QuickFlow Team</Authors>
 		<Description>The repositories implementation library for QuickFlow application.</Description>
 		<PackageReadmeFile>Readme.md</PackageReadmeFile>

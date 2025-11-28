@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using QuickFlow.BE.Repositories;
 using QuickFlow.BE.Shared.Interfaces.Repositories;
 
-namespace QuickFlow.BE.Main.Extensions
+namespace QuickFlow.BE.Repositories.Extensions
 {
 	public static class IServiceCollection_Extensions
 	{

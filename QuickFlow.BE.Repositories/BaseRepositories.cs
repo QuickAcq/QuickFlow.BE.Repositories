@@ -1,13 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 using QuickFlow.BE.Shared.Interfaces;
 using QuickFlow.BE.Shared.Interfaces.Repositories;
 
 namespace QuickFlow.BE.Repositories
 {
-	internal class BaseRepositories<EntityType,IdType> : BaseRepositories, IBaseRepositories<EntityType, IdType>
+	internal class BaseRepositories<EntityType, IdType> : BaseRepositories, IBaseRepositories<EntityType, IdType>
 		where EntityType : class
 		where IdType : struct
 	{
@@ -18,7 +18,7 @@ namespace QuickFlow.BE.Repositories
 
 		public async Task AddAsync(EntityType entity)
 		{
-			await this.DbContext.AddAsync< EntityType>(entity);			
+			await this.DbContext.AddAsync<EntityType>(entity);			
 		}
 
 		public void Remove(EntityType entity)
@@ -34,8 +34,8 @@ namespace QuickFlow.BE.Repositories
 		}
 
 		public async Task<EntityType?> TryGetByIdAsync(IdType id)
-		{			
-			IEntityType? entityType = DbContext.Model.FindEntityType(typeof(EntityType));			
+		{
+			IEntityType? entityType = DbContext.Model.FindEntityType(typeof(EntityType));
 			if (entityType == null)
 				throw new InvalidOperationException($"Entity type '{typeof(EntityType).Name}' not found in DbContext.");
 
@@ -69,10 +69,10 @@ namespace QuickFlow.BE.Repositories
 		}
 	}
 
-	internal class BaseRepositories:IBaseRepositories	
+	internal class BaseRepositories : IBaseRepositories
 	{
-		public IDICollection DICollection { get; private set; }
-		public QuickFlowDbContext DbContext { get; private set; }
+		public IDICollection DICollection { get; private set; }		
+		protected QuickFlowDbContext DbContext { get; private set; }
 
 		public BaseRepositories(IDICollection dICollection, QuickFlowDbContext dbContext)
 		{

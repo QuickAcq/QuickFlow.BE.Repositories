@@ -12,6 +12,8 @@ namespace QuickFlow.BE.Repositories.Extensions
 		{
 			services.AddScoped<IWfInstanceRepositories, WfInstanceRepositories>();
 			services.AddScoped<IWfInstanceTaskRepositories, WfInstanceTaskRepositories>();
+
+			services.AddScoped<IRepositoriesCollection, RepositoriesCollection>();
 			return services;
 		}
 

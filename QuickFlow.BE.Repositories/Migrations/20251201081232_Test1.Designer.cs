@@ -12,7 +12,7 @@ using QuickFlow.BE.Repositories;
 namespace QuickFlow.BE.Repositories.Migrations
 {
     [DbContext(typeof(QuickFlowDbContext))]
-    [Migration("20251201045308_Test1")]
+    [Migration("20251201081232_Test1")]
     partial class Test1
     {
         /// <inheritdoc />
@@ -74,13 +74,13 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasColumnName("login_name");
 
                     b.HasKey("RowId")
-                        .HasName("pk_mst_users");
+                        .HasName("pk_mst_user");
 
                     b.HasIndex("LoginName")
                         .IsUnique()
-                        .HasDatabaseName("ix_mst_users_login_name");
+                        .HasDatabaseName("ix_mst_user_login_name");
 
-                    b.ToTable("mst_users", (string)null);
+                    b.ToTable("mst_user", (string)null);
 
                     b.HasData(
                         new
@@ -93,6 +93,43 @@ namespace QuickFlow.BE.Repositories.Migrations
                             LastModifiedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             LastModifiedBy = new Guid("00000000-0000-0000-0000-000000000001"),
                             LoginName = "admin"
+                        });
+                });
+
+            modelBuilder.Entity("QuickFlow.BE.Entities.MstWfStateType", b =>
+                {
+                    b.Property<int>("RowId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("row_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("RowId"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("name");
+
+                    b.HasKey("RowId")
+                        .HasName("pk_mst_wf_state_type");
+
+                    b.ToTable("mst_wf_state_type", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RowId = 1,
+                            Name = "Start"
+                        },
+                        new
+                        {
+                            RowId = 2,
+                            Name = "End"
+                        },
+                        new
+                        {
+                            RowId = 3,
+                            Name = "Normal"
                         });
                 });
 
@@ -149,19 +186,19 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasColumnName("wf_template_id");
 
                     b.HasKey("RowId")
-                        .HasName("pk_wf_instances");
+                        .HasName("pk_wf_instance");
 
                     b.HasIndex("CurrentWfStateId")
-                        .HasDatabaseName("ix_wf_instances_current_wf_state_id");
+                        .HasDatabaseName("ix_wf_instance_current_wf_state_id");
 
                     b.HasIndex("DocId")
                         .IsUnique()
-                        .HasDatabaseName("ix_wf_instances_doc_id");
+                        .HasDatabaseName("ix_wf_instance_doc_id");
 
                     b.HasIndex("WfTemplateId")
-                        .HasDatabaseName("ix_wf_instances_wf_template_id");
+                        .HasDatabaseName("ix_wf_instance_wf_template_id");
 
-                    b.ToTable("wf_instances", (string)null);
+                    b.ToTable("wf_instance", (string)null);
                 });
 
             modelBuilder.Entity("QuickFlow.BE.Entities.WfInstanceTask", b =>
@@ -211,15 +248,15 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasColumnName("wf_instance_id");
 
                     b.HasKey("RowId")
-                        .HasName("pk_wf_instance_tasks");
+                        .HasName("pk_wf_instance_task");
 
                     b.HasIndex("UserId")
-                        .HasDatabaseName("ix_wf_instance_tasks_user_id");
+                        .HasDatabaseName("ix_wf_instance_task_user_id");
 
                     b.HasIndex("WfInstanceId")
-                        .HasDatabaseName("ix_wf_instance_tasks_wf_instance_id");
+                        .HasDatabaseName("ix_wf_instance_task_wf_instance_id");
 
-                    b.ToTable("wf_instance_tasks", (string)null);
+                    b.ToTable("wf_instance_task", (string)null);
                 });
 
             modelBuilder.Entity("QuickFlow.BE.Entities.WfTemplate", b =>
@@ -266,9 +303,22 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasColumnName("version");
 
                     b.HasKey("RowId")
-                        .HasName("pk_wf_templates");
+                        .HasName("pk_wf_template");
 
-                    b.ToTable("wf_templates", (string)null);
+                    b.ToTable("wf_template", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RowId = new Guid("00000000-0000-0000-0000-000000000002"),
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000001"),
+                            IsDeleted = false,
+                            LastModifiedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = new Guid("00000000-0000-0000-0000-000000000001"),
+                            Name = "DummyTemplate",
+                            Version = 1
+                        });
                 });
 
             modelBuilder.Entity("QuickFlow.BE.Entities.WfTemplateState", b =>
@@ -305,17 +355,37 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasColumnType("uuid")
                         .HasColumnName("last_modified_by");
 
+                    b.Property<int>("MstWfStateTypeId")
+                        .HasColumnType("integer")
+                        .HasColumnName("mst_wf_state_type_id");
+
                     b.Property<Guid>("WfTemplateId")
                         .HasColumnType("uuid")
                         .HasColumnName("wf_template_id");
 
                     b.HasKey("RowId")
-                        .HasName("pk_wf_template_states");
+                        .HasName("pk_wf_template_state");
+
+                    b.HasIndex("MstWfStateTypeId")
+                        .HasDatabaseName("ix_wf_template_state_mst_wf_state_type_id");
 
                     b.HasIndex("WfTemplateId")
-                        .HasDatabaseName("ix_wf_template_states_wf_template_id");
+                        .HasDatabaseName("ix_wf_template_state_wf_template_id");
 
-                    b.ToTable("wf_template_states", (string)null);
+                    b.ToTable("wf_template_state", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            RowId = new Guid("00000000-0000-0000-0000-000000000003"),
+                            CreatedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            CreatedBy = new Guid("00000000-0000-0000-0000-000000000001"),
+                            IsDeleted = false,
+                            LastModifiedAt = new DateTime(2025, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            LastModifiedBy = new Guid("00000000-0000-0000-0000-000000000001"),
+                            MstWfStateTypeId = 1,
+                            WfTemplateId = new Guid("00000000-0000-0000-0000-000000000002")
+                        });
                 });
 
             modelBuilder.Entity("QuickFlow.BE.Entities.WfInstance", b =>
@@ -325,14 +395,14 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasForeignKey("CurrentWfStateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_wf_instances_wf_template_states_current_wf_state_id");
+                        .HasConstraintName("fk_wf_instance_wf_template_state_current_wf_state_id");
 
                     b.HasOne("QuickFlow.BE.Entities.WfTemplate", "WfTemplate")
                         .WithMany("WfInstances")
                         .HasForeignKey("WfTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_wf_instances_wf_templates_wf_template_id");
+                        .HasConstraintName("fk_wf_instance_wf_template_wf_template_id");
 
                     b.Navigation("CurrentWfState");
 
@@ -346,14 +416,14 @@ namespace QuickFlow.BE.Repositories.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_wf_instance_tasks_mst_users_user_id");
+                        .HasConstraintName("fk_wf_instance_task_mst_user_user_id");
 
                     b.HasOne("QuickFlow.BE.Entities.WfInstance", "WfInstance")
                         .WithMany("WfInstanceTasks")
                         .HasForeignKey("WfInstanceId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_wf_instance_tasks_wf_instances_wf_instance_id");
+                        .HasConstraintName("fk_wf_instance_task_wf_instance_wf_instance_id");
 
                     b.Navigation("User");
 
@@ -362,12 +432,21 @@ namespace QuickFlow.BE.Repositories.Migrations
 
             modelBuilder.Entity("QuickFlow.BE.Entities.WfTemplateState", b =>
                 {
+                    b.HasOne("QuickFlow.BE.Entities.MstWfStateType", "MstWfStateType")
+                        .WithMany("WfTemplateStates")
+                        .HasForeignKey("MstWfStateTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_wf_template_state_mst_wf_state_type_mst_wf_state_type_id");
+
                     b.HasOne("QuickFlow.BE.Entities.WfTemplate", "WfTemplate")
                         .WithMany("WfTemplateStates")
                         .HasForeignKey("WfTemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("fk_wf_template_states_wf_templates_wf_template_id");
+                        .HasConstraintName("fk_wf_template_state_wf_template_wf_template_id");
+
+                    b.Navigation("MstWfStateType");
 
                     b.Navigation("WfTemplate");
                 });
@@ -375,6 +454,11 @@ namespace QuickFlow.BE.Repositories.Migrations
             modelBuilder.Entity("QuickFlow.BE.Entities.MstUser", b =>
                 {
                     b.Navigation("WfInstanceTasks");
+                });
+
+            modelBuilder.Entity("QuickFlow.BE.Entities.MstWfStateType", b =>
+                {
+                    b.Navigation("WfTemplateStates");
                 });
 
             modelBuilder.Entity("QuickFlow.BE.Entities.WfInstance", b =>

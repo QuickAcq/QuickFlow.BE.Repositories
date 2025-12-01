@@ -3,6 +3,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
+using QuickFlow.BE.Shared.Extensions;
 using QuickFlow.BE.Entities;
 
 namespace QuickFlow.BE.Repositories.Extensions

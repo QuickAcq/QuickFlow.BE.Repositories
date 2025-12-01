@@ -11,7 +11,7 @@ using QuickFlow.BE.Repositories;
 namespace QuickFlow.BE.Repositories.Migrations
 {
     [DbContext(typeof(QuickFlowDbContext))]
-    [Migration("20251129030339_EmptyDatabase")]
+    [Migration("20251201080404_EmptyDatabase")]
     partial class EmptyDatabase
     {
         /// <inheritdoc />

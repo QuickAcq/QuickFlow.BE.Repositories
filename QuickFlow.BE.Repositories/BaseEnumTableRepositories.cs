@@ -6,15 +6,15 @@ using QuickFlow.BE.Shared.Interfaces.Repositories;
 
 namespace QuickFlow.BE.Repositories
 {
-	internal class BaseApplicationTableRepositories<EntityType> : BaseRepositories<EntityType, Guid>,IBaseApplicationTableRepositories<EntityType>
-		where EntityType : BaseApplicationTable
+	internal class BaseEnumTableRepositories<EntityType> : BaseRepositories<EntityType, int>, IBaseEnumTableRepositories<EntityType>
+		where EntityType : BaseEnumTable
 	{
-		public BaseApplicationTableRepositories(IDICollection dICollection, QuickFlowDbContext dbContext)
+		public BaseEnumTableRepositories(IDICollection dICollection, QuickFlowDbContext dbContext)
 			: base(dICollection, dbContext)
 		{
 		}
 
-		public override async Task<EntityType?> TryGetByIdAsync(Guid id)
+		public override async Task<EntityType?> TryGetByIdAsync(int id)
 		{
 			return await DbContext.Set<EntityType>().Where(row => row.RowId == id)
 				.SingleOrDefaultAsync();

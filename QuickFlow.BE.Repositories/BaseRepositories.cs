@@ -2,13 +2,14 @@
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata;
 
+using QuickFlow.BE.Entities;
 using QuickFlow.BE.Shared.Interfaces;
 using QuickFlow.BE.Shared.Interfaces.Repositories;
 
 namespace QuickFlow.BE.Repositories
 {
 	internal class BaseRepositories<EntityType, IdType> : BaseRepositories, IBaseRepositories<EntityType, IdType>
-		where EntityType : class
+		where EntityType : BaseTable
 		where IdType : struct
 	{
 		public BaseRepositories(IDICollection dICollection, QuickFlowDbContext dbContext)
@@ -16,12 +17,12 @@ namespace QuickFlow.BE.Repositories
 		{
 		}
 
-		public async Task AddAsync(EntityType entity)
+		public virtual async Task AddAsync(EntityType entity)
 		{
 			await this.DbContext.AddAsync<EntityType>(entity);			
 		}
 
-		public void Remove(EntityType entity)
+		public virtual void Remove(EntityType entity)
 		{
 			EntityEntry<EntityType> entry = DbContext.Entry(entity);
 
@@ -33,7 +34,7 @@ namespace QuickFlow.BE.Repositories
 			DbContext.Remove(entity);
 		}
 
-		public async Task<EntityType?> TryGetByIdAsync(IdType id)
+		public virtual async Task<EntityType?> TryGetByIdAsync(IdType id)
 		{
 			IEntityType? entityType = DbContext.Model.FindEntityType(typeof(EntityType));
 			if (entityType == null)
@@ -53,7 +54,7 @@ namespace QuickFlow.BE.Repositories
 					EF.Property<object>(e, keyName).Equals(id));
 		}
 
-		public async Task<EntityType> MustGetByIdAsync(IdType id)
+		public virtual async Task<EntityType> MustGetByIdAsync(IdType id)
 		{
 			EntityType? result = await this.TryGetByIdAsync(id);
 			if (result == null)
@@ -63,7 +64,7 @@ namespace QuickFlow.BE.Repositories
 			return result;
 		}
 
-		public IQueryable<EntityType> SelectQuery()
+		public virtual IQueryable<EntityType> SelectQuery()
 		{
 			return this.DbContext.Set<EntityType>();
 		}

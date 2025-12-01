@@ -4,9 +4,9 @@ using QuickFlow.BE.Shared.Interfaces.Repositories;
 
 namespace QuickFlow.BE.Repositories
 {
-	internal class WfInstanceRepositories : BaseApplicationTableRepositories<WfInstance>, IWfInstanceRepositories
+	internal class WfTemplateRepositories : BaseApplicationTableRepositories<WfTemplate>, IWfTemplateRepositories
 	{
-		public WfInstanceRepositories(IDICollection dICollection, QuickFlowDbContext dbContext)
+		public WfTemplateRepositories(IDICollection dICollection, QuickFlowDbContext dbContext)
 			: base(dICollection, dbContext)
 		{
 		}

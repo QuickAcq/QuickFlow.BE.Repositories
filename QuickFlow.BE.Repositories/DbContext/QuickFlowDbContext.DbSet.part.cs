@@ -9,19 +9,19 @@ namespace QuickFlow.BE.Repositories
 	{
 		partial void OnModelCreatingPartial(ModelBuilder modelBuilder)
 		{
-			this.OnModelCreatingPartial_MstUsers(modelBuilder);
+			this.OnModelCreatingPartial_MstUser(modelBuilder);
 
-			this.OnModelCreatingPartial_WfTemplates(modelBuilder);
-			this.OnModelCreatingPartial_WfTemplateStates(modelBuilder);
+			this.OnModelCreatingPartial_WfTemplate(modelBuilder);
+			this.OnModelCreatingPartial_WfTemplateState(modelBuilder);
 
-			this.OnModelCreatingPartial_WfInstances(modelBuilder);
-			this.OnModelCreatingPartial_WfInstanceTasks(modelBuilder);
+			this.OnModelCreatingPartial_WfInstance(modelBuilder);
+			this.OnModelCreatingPartial_WfInstanceTask(modelBuilder);
 		}
 
-		#region MstUsers
-		public DbSet<MstUser> MstUsers { get; set; }
+		#region MstUser
+		public DbSet<MstUser> MstUser { get; set; }
 
-		private void OnModelCreatingPartial_MstUsers(ModelBuilder modelBuilder)
+		private void OnModelCreatingPartial_MstUser(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<MstUser>()
 				.SetApplicationTableDefault()
@@ -47,40 +47,40 @@ namespace QuickFlow.BE.Repositories
 			];
 		#endregion
 
-		#region WfTemplates
-		public DbSet<WfTemplate> WfTemplates { get; set; }
+		#region WfTemplate
+		public DbSet<WfTemplate> WfTemplate { get; set; }
 
-		private void OnModelCreatingPartial_WfTemplates(ModelBuilder modelBuilder)
+		private void OnModelCreatingPartial_WfTemplate(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<WfTemplate>()
 				.SetApplicationTableDefault();
 		}
 		#endregion
 
-		#region WfTemplateStates
-		public DbSet<WfTemplateState> WfTemplateStates { get; set; }
+		#region WfTemplateState
+		public DbSet<WfTemplateState> WfTemplateState { get; set; }
 
-		private void OnModelCreatingPartial_WfTemplateStates(ModelBuilder modelBuilder)
+		private void OnModelCreatingPartial_WfTemplateState(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<WfTemplateState>()
 				.SetApplicationTableDefault();
 		}
 		#endregion
 
-		#region WfInstances
-		public DbSet<WfInstance> WfInstances { get; set; }
+		#region WfInstance
+		public DbSet<WfInstance> WfInstance { get; set; }
 
-		private void OnModelCreatingPartial_WfInstances(ModelBuilder modelBuilder)
+		private void OnModelCreatingPartial_WfInstance(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<WfInstance>()
 				.SetApplicationTableDefault();
 		}
 		#endregion
 
-		#region WfInstanceTasks
-		public DbSet<WfInstanceTask> WfInstanceTasks { get; set; }
+		#region WfInstanceTask
+		public DbSet<WfInstanceTask> WfInstanceTask { get; set; }
 
-		private void OnModelCreatingPartial_WfInstanceTasks(ModelBuilder modelBuilder)
+		private void OnModelCreatingPartial_WfInstanceTask(ModelBuilder modelBuilder)
 		{
 			modelBuilder.Entity<WfInstanceTask>()
 				.SetApplicationTableDefault();

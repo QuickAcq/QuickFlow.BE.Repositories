@@ -18,7 +18,7 @@ namespace QuickFlow.BE.Repositories.Extensions
 
 		internal static IServiceCollection RegisterDbContextImplementation(this IServiceCollection services)
 		{
-			services.AddDbContext<QuickFlowDbContext>(opts => opts.UseNpgsql("User ID=quickflowdb_dev_admin;Password=P@ssw0rd;Server=103.82.240.95;Port=5432;Database=quickflowdb_dev;Pooling=true;"));
+			services.AddDbContext<QuickFlowDbContext>(opts => opts.UseDefaultBuild());
 			return services;
 		}
 	}

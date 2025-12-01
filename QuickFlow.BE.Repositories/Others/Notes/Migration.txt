@@ -6,6 +6,7 @@ Install ef tool (Needed for creating migration) (version disesuaikan dengan EF C
 Add new migration
 	dotnet ef migrations add [MigrationName] --project QuickFlow.BE.Repositories
 	dotnet ef migrations add EmptyDatabase --project QuickFlow.BE.Repositories
+	dotnet ef migrations add Test1
 
 Remove last migration (hanya gunakan jika migrasi terakhir ingin diperbaiki)
 	dotnet ef migrations remove --project QuickFlow.BE.Repositories

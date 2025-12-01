@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
 using QuickFlow.BE.Entities;
+using QuickFlow.BE.Repositories.Extensions;
 
 namespace QuickFlow.BE.Repositories
 {
@@ -19,9 +20,7 @@ namespace QuickFlow.BE.Repositories
 		{
 			if (!optionsBuilder.IsConfigured)
 			{
-				optionsBuilder.UseNpgsql("User ID=quickflowdb_dev_admin;Password=P@ssw0rd;Server=103.82.240.95;Port=5432;Database=quickflowdb_dev;Pooling=true;")
-					.UseSnakeCaseNamingConvention();
-
+				optionsBuilder.UseDefaultBuild();
 			}
 			base.OnConfiguring(optionsBuilder);
 		}			
@@ -34,7 +33,7 @@ namespace QuickFlow.BE.Repositories
 		//public virtual DbSet<WfInstanceTask> WfInstanceTasks { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
-		{
+		{			
 			//modelBuilder.Entity<MstUser>(entity =>
 			//{
 			//	entity.HasKey(e => e.UserId).HasName("mst_user_pkey");

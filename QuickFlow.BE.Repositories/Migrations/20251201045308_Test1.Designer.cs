@@ -12,7 +12,7 @@ using QuickFlow.BE.Repositories;
 namespace QuickFlow.BE.Repositories.Migrations
 {
     [DbContext(typeof(QuickFlowDbContext))]
-    [Migration("20251201035138_Test1")]
+    [Migration("20251201045308_Test1")]
     partial class Test1
     {
         /// <inheritdoc />

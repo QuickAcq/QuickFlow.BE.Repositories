@@ -1,0 +1,18 @@
+﻿Jalankan di Developer Power Shell
+
+Install ef tool (Needed for creating migration) (version disesuaikan dengan EF Core)
+	dotnet tool install --global dotnet-ef --version 8.*
+
+Add new migration
+	dotnet ef migrations add [MigrationName] --project QuickFlow.BE.Repositories
+	dotnet ef migrations add EmptyDatabase --project QuickFlow.BE.Repositories
+
+Remove last migration (hanya gunakan jika migrasi terakhir ingin diperbaiki)
+	dotnet ef migrations remove --project QuickFlow.BE.Repositories
+
+Refresh database ke migrasi terakhir
+	dotnet ef database update --project QuickFlow.BE.Repositories
+
+Update database ke migrasi tertentu
+	dotnet ef database update [MigrationName] --project QuickFlow.BE.Repositories
+	dotnet ef database update EmptyDatabase --project QuickFlow.BE.Repositories

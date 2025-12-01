@@ -1,3 +1,4 @@
 ﻿Scaffold-DbContext "User ID=quickflowdb_dev_admin;Password=P@ssw0rd;Server=103.82.240.95;Port=5432;Database=quickflowdb_dev;Pooling=true;" Npgsql.EntityFrameworkCore.PostgreSQL -Project QuickFlow.BE.Repositories -StartupProject QuickFlow.BE.Repositories -OutputDir ..\..\QuickFlow.BE.Entities\QuickFlow.BE.Entities\Entities -ContextDir DbContext -Namespace QuickFlow.BE.Entities -Context QuickFlowDbContext -ContextNamespace QuickFlow.BE.Repositories -f
 
 Scaffold-DbContext "Name=QuickFlowDb" Npgsql.EntityFrameworkCore.PostgreSQL -Project QuickFlow.BE.Repositories -StartupProject QuickFlow.BE.Repositories -OutputDir ..\..\QuickFlow.BE.Entities\QuickFlow.BE.Entities\Entities -ContextDir DbContext -Namespace QuickFlow.BE.Entities -Context QuickFlowDbContext -ContextNamespace QuickFlow.BE.Repositories -f
+
